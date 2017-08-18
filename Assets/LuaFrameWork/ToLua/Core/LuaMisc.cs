@@ -44,29 +44,29 @@ namespace LuaInterface
     //也可以使用LuaByteBufferAttribute来标记byte[]
     public struct LuaByteBuffer
     {        
-        public LuaByteBuffer(IntPtr source, int len)
+		public LuaByteBuffer(IntPtr source, int len):this()
         {
             buffer = new byte[len];
-            Length = len;
+			this.Length = len;
             Marshal.Copy(source, buffer, 0, len);
         }
         
-        public LuaByteBuffer(byte[] buf)
+		public LuaByteBuffer(byte[] buf):this()
         {
             buffer = buf;
-            Length = buf.Length;            
+			this.Length = buf.Length;            
         }
 
-        public LuaByteBuffer(byte[] buf, int len)
+		public LuaByteBuffer(byte[] buf, int len):this()
         {            
             buffer = buf;
-            Length = len;
+            this.Length = len;
         }
 
-        public LuaByteBuffer(System.IO.MemoryStream stream)
+		public LuaByteBuffer(System.IO.MemoryStream stream):this()
         {
             buffer = stream.GetBuffer();
-            Length = (int)stream.Length;            
+			this.Length = (int)stream.Length;            
         }
 
         public static implicit operator LuaByteBuffer(System.IO.MemoryStream stream)
