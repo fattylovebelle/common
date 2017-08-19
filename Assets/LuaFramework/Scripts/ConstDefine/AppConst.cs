@@ -40,5 +40,10 @@ namespace LuaFramework {
                 return Application.dataPath + "/" + AppName;
             }
         }
+
+		// ui ab资源的数据后缀
+		public const string uiDataSubfix = "_desc" + ExtName;
+		// ui ab资源的资源后缀
+		public const string uiResSubfix = "_res" + ExtName;
     }
 }
