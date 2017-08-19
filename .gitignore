@@ -5,4 +5,5 @@ Assembly-CSharp-Editor.csproj
 common.sln
 common.userprefs
 Library
-Assets\StreamingAssets
+Assets/StreamingAssets
+Assets/StreamingAssets.meta
