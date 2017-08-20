@@ -76,8 +76,15 @@ public class BasePackager
 	/// 生成绑定素材
 	/// </summary>
 	public static void BaseBuildAssetResource(BuildTarget target, List<AssetBundleBuild> maps) {
-		
-		string resPath = "Assets/" + AppConst.AssetDir;
+		BaseBuildAssetResource (target, maps, "Assets/" + AppConst.AssetDir);
+	}
+
+
+
+	/// <summary>
+	/// 生成绑定素材
+	/// </summary>
+	public static void BaseBuildAssetResource(BuildTarget target, List<AssetBundleBuild> maps, string resPath) {
 
 		BuildAssetBundleOptions options = BuildAssetBundleOptions.DeterministicAssetBundle;
 		try {
@@ -89,8 +96,6 @@ public class BasePackager
 		string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
 		if (Directory.Exists(streamDir)) Directory.Delete(streamDir, true);
 	}
-
-
 
 
 	/// <summary>

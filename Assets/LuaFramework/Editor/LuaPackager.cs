@@ -22,7 +22,7 @@ public class LuaPackager : BasePackager {
 	public static void packageUIForMacOS() {
 		packageLua ();
 
-		BasePackager.BaseBuildAssetResource (BuildTarget.StandaloneOSXIntel64, maps);
+		BasePackager.BaseBuildAssetResource (BuildTarget.StandaloneWindows64, maps);
 
 		clearLuaFiles ();
 	}
@@ -32,7 +32,7 @@ public class LuaPackager : BasePackager {
 	public static void packageUIForWindows() {
 		packageLua ();
 
-		BasePackager.BaseBuildAssetResource (BuildTarget.StandaloneWindows, maps);
+		BasePackager.BaseBuildAssetResource (BuildTarget.StandaloneWindows64, maps);
 
 		clearLuaFiles ();
 	}
@@ -51,7 +51,7 @@ public class LuaPackager : BasePackager {
 	public static void packageUIForAndroid() {
 		packageLua ();
 
-		BasePackager.BaseBuildAssetResource (BuildTarget.Android, maps);
+		BasePackager.BaseBuildAssetResource (BuildTarget.StandaloneWindows64, maps);
 
 		clearLuaFiles ();
 	}
@@ -81,8 +81,11 @@ public class LuaPackager : BasePackager {
 	/// </summary>
 	static void HandleLuaBundle() {
 		string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
-		if (!Directory.Exists(streamDir)) Directory.CreateDirectory(streamDir);
+		if (!Directory.Exists (streamDir)) {
+			Directory.CreateDirectory (streamDir);
+		}
 
+		// 把lua文件copy到临时目录
 		string[] srcDirs = { CustomSettings.luaDir, CustomSettings.FrameworkPath + "/ToLua/Lua" };
 		for (int i = 0; i < srcDirs.Length; i++) {
 			if (AppConst.LuaByteMode) {
@@ -104,10 +107,12 @@ public class LuaPackager : BasePackager {
 				ToLuaMenu.CopyLuaBytesFiles(srcDirs[i], streamDir);
 			}
 		}
+
+		// 把lua文件打包成assetsBundle，放在StreamAssets目录下面
 		string[] dirs = Directory.GetDirectories(streamDir, "*", SearchOption.AllDirectories);
 		for (int i = 0; i < dirs.Length; i++) {
 			string name = dirs[i].Replace(streamDir, string.Empty);
-			name = name.Replace('\\', '_').Replace('/', '_');
+			//name = name.Replace('\\', '_').Replace('/', '_');
 			name = "lua/lua_" + name.ToLower() + AppConst.ExtName;
 
 			string path = "Assets" + dirs[i].Replace(Application.dataPath, "");
@@ -180,16 +185,21 @@ public class LuaPackager : BasePackager {
 
 	/// 资源打包
 	public static void AddBuildMap(string bundleName, string pattern, string path) {
-		string[] files = Directory.GetFiles(path, pattern);// 获取路径path 下 pattern的所有文件 string[] files = Directory.GetFiles(path, "(*.mp3|*.ogg)");
-		if (files.Length == 0) return;
-
-		for (int i = 0; i < files.Length; i++) {
-			files[i] = files[i].Replace('\\', '/');
+		// 获取路径path 下 pattern的所有文件 string[] files = Directory.GetFiles(path, "(*.mp3|*.ogg)");
+		string[] files = Directory.GetFiles(path, pattern);
+		if (files.Length == 0) {
+			return;
 		}
-		AssetBundleBuild build = new AssetBundleBuild();
-		build.assetBundleName = bundleName;
-		build.assetNames = files;
-		maps.Add(build);
+
+		// 打包成assetsbundle
+		string assetsName = null;
+		for (int i = 0; i < files.Length; i++) {
+			assetsName = files [i].Replace ('\\', '/');
+			AssetBundleBuild build = new AssetBundleBuild();
+			build.assetBundleName = assetsName.Replace ("Assets/", "");
+			build.assetNames = new string[]{assetsName};
+			maps.Add(build);
+		}
 	}
 
 
