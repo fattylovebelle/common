@@ -34,8 +34,8 @@ namespace LuaFramework {
         /// 释放资源
         /// </summary>
         public void CheckExtractResource() {
-            bool isExists = Directory.Exists(Util.DataPath) &&
-              Directory.Exists(Util.DataPath + "lua/") && File.Exists(Util.DataPath + "files.txt");
+            bool isExists = Directory.Exists(Util.CacheDataPath) &&
+              Directory.Exists(Util.CacheDataPath + "lua/") && File.Exists(Util.CacheDataPath + "files.txt");
             if (isExists || AppConst.DebugMode) {
                 StartCoroutine(OnUpdateResource());
                 return;   //文件已经解压过了，自己可添加检查文件列表逻辑
@@ -44,7 +44,7 @@ namespace LuaFramework {
         }
 
         IEnumerator OnExtractResource() {
-            string dataPath = Util.DataPath;  //数据目录
+            string dataPath = Util.CacheDataPath;  //数据目录
             string resPath = Util.AppContentPath(); //游戏包资源目录
 
             if (Directory.Exists(dataPath)) Directory.Delete(dataPath, true);
@@ -115,7 +115,7 @@ namespace LuaFramework {
                 OnResourceInited();
                 yield break;
             }
-            string dataPath = Util.DataPath;  //数据目录
+            string dataPath = Util.CacheDataPath;  //数据目录
             string url = AppConst.WebUrl;
             string message = string.Empty;
             string random = DateTime.Now.ToString("yyyymmddhhmmss");

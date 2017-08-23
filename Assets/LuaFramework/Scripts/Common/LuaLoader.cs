@@ -29,7 +29,7 @@ namespace LuaFramework {
         /// </summary>
         /// <param name="bundle"></param>
         public void AddBundle(string bundleName) {
-            string url = Util.DataPath + bundleName.ToLower();
+            string url = Util.CacheDataPath + bundleName.ToLower();
             if (File.Exists(url)) {
                 var bytes = File.ReadAllBytes(url);
 				AssetBundle bundle = AssetBundle.LoadFromMemory(bytes);
@@ -48,7 +48,8 @@ namespace LuaFramework {
         /// <param name="fileName"></param>
         /// <returns></returns>
         public override byte[] ReadFile(string fileName) {
-            return base.ReadFile(fileName);     
+			Debug.Log ("lua文件 fileName = " + fileName);
+            return base.ReadFile(fileName);
         }
     }
 }

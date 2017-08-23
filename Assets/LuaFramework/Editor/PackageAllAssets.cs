@@ -92,8 +92,8 @@ public class PackageAllAssets
 	}
 
 	public static void packageEffect() {
-		if (Directory.Exists(Util.DataPath)) {
-			Directory.Delete(Util.DataPath, true);
+		if (Directory.Exists(Util.CacheDataPath)) {
+			Directory.Delete(Util.CacheDataPath, true);
 		}
 		string streamPath = Application.streamingAssetsPath;
 		if (Directory.Exists(streamPath)) {

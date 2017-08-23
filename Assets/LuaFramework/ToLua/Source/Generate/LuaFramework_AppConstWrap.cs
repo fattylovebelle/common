@@ -9,11 +9,11 @@ public class LuaFramework_AppConstWrap
 		L.BeginClass(typeof(LuaFramework.AppConst), typeof(System.Object));
 		L.RegFunction("New", _CreateLuaFramework_AppConst);
 		L.RegFunction("__tostring", ToLua.op_ToString);
-		L.RegConstant("DebugMode", 0);
+		L.RegConstant("DebugMode", 1);
 		L.RegConstant("ExampleMode", 1);
 		L.RegConstant("UpdateMode", 0);
 		L.RegConstant("LuaByteMode", 0);
-		L.RegConstant("LuaBundleMode", 0);
+		L.RegConstant("LuaBundleMode", 1);
 		L.RegConstant("TimerInterval", 1);
 		L.RegConstant("GameFrameRate", 30);
 		L.RegVar("AppName", get_AppName, null);
@@ -25,6 +25,7 @@ public class LuaFramework_AppConstWrap
 		L.RegVar("UserId", get_UserId, set_UserId);
 		L.RegVar("SocketPort", get_SocketPort, set_SocketPort);
 		L.RegVar("SocketAddress", get_SocketAddress, set_SocketAddress);
+		L.RegVar("File_LIST", get_File_LIST, null);
 		L.RegVar("uiDataSubfix", get_uiDataSubfix, null);
 		L.RegVar("uiResSubfix", get_uiResSubfix, null);
 		L.RegVar("FrameworkRoot", get_FrameworkRoot, null);
@@ -173,6 +174,20 @@ public class LuaFramework_AppConstWrap
 		try
 		{
 			LuaDLL.lua_pushstring(L, LuaFramework.AppConst.SocketAddress);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_File_LIST(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, LuaFramework.AppConst.File_LIST);
 			return 1;
 		}
 		catch (Exception e)

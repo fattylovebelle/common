@@ -448,7 +448,7 @@ public class LuaFramework_UtilWrap
 	{
 		try
 		{
-			LuaDLL.lua_pushstring(L, LuaFramework.Util.DataPath);
+			LuaDLL.lua_pushstring(L, LuaFramework.Util.CacheDataPath);
 			return 1;
 		}
 		catch (Exception e)

@@ -188,7 +188,7 @@ namespace LuaFramework {
         /// <summary>
         /// 取得数据存放目录
         /// </summary>
-        public static string DataPath {
+        public static string CacheDataPath {
             get {
                 string game = AppConst.AppName.ToLower();
                 if (Application.isMobilePlatform) {
@@ -209,7 +209,7 @@ namespace LuaFramework {
             if (Application.isEditor)
                 return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.AssetDir + "/";
             else if (Application.isMobilePlatform || Application.isConsolePlatform)
-                return "file:///" + DataPath;
+                return "file:///" + CacheDataPath;
             else // For standalone player.
                 return "file://" + Application.streamingAssetsPath + "/";
         }
