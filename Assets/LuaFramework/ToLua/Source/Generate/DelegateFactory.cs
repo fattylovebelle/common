@@ -23,6 +23,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<int>), factory.System_Action_int);
 		dict.Add(typeof(System.Comparison<int>), factory.System_Comparison_int);
 		dict.Add(typeof(System.Func<int,int>), factory.System_Func_int_int);
+		dict.Add(typeof(GEventDispatcher.Listner), factory.GEventDispatcher_Listner);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -49,6 +50,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<int>>.Init(factory.System_Action_int);
 		DelegateTraits<System.Comparison<int>>.Init(factory.System_Comparison_int);
 		DelegateTraits<System.Func<int,int>>.Init(factory.System_Func_int_int);
+		DelegateTraits<GEventDispatcher.Listner>.Init(factory.GEventDispatcher_Listner);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -75,6 +77,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<int>>.Init(factory.Check_System_Action_int);
 		TypeTraits<System.Comparison<int>>.Init(factory.Check_System_Comparison_int);
 		TypeTraits<System.Func<int,int>>.Init(factory.Check_System_Func_int_int);
+		TypeTraits<GEventDispatcher.Listner>.Init(factory.Check_GEventDispatcher_Listner);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -101,6 +104,7 @@ public class DelegateFactory
 		StackTraits<System.Action<int>>.Push = factory.Push_System_Action_int;
 		StackTraits<System.Comparison<int>>.Push = factory.Push_System_Comparison_int;
 		StackTraits<System.Func<int,int>>.Push = factory.Push_System_Func_int_int;
+		StackTraits<GEventDispatcher.Listner>.Push = factory.Push_GEventDispatcher_Listner;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
@@ -575,6 +579,63 @@ public class DelegateFactory
 	}
 
 	void Push_System_Func_int_int(IntPtr L, System.Func<int,int> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class GEventDispatcher_Listner_Event : LuaDelegate
+	{
+		public GEventDispatcher_Listner_Event(LuaFunction func) : base(func) { }
+		public GEventDispatcher_Listner_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(object param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(object param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public GEventDispatcher.Listner GEventDispatcher_Listner(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			GEventDispatcher.Listner fn = delegate(object param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			GEventDispatcher_Listner_Event target = new GEventDispatcher_Listner_Event(func);
+			GEventDispatcher.Listner d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			GEventDispatcher_Listner_Event target = new GEventDispatcher_Listner_Event(func, self);
+			GEventDispatcher.Listner d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_GEventDispatcher_Listner(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(GEventDispatcher.Listner), L, pos);
+	}
+
+	void Push_GEventDispatcher_Listner(IntPtr L, GEventDispatcher.Listner o)
 	{
 		ToLua.Push(L, o);
 	}

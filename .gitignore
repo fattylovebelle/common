@@ -7,3 +7,6 @@ common.userprefs
 Library
 Assets/StreamingAssets
 Assets/StreamingAssets.meta
+*.exe
+*.apk
+*.ipa

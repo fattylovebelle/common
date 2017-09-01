@@ -30,7 +30,7 @@ public class LuaFramework_UtilWrap
 		L.RegFunction("CheckEnvironment", CheckEnvironment);
 		L.RegFunction("New", _CreateLuaFramework_Util);
 		L.RegFunction("__tostring", ToLua.op_ToString);
-		L.RegVar("DataPath", get_DataPath, null);
+		L.RegVar("CacheDataPath", get_CacheDataPath, null);
 		L.RegVar("NetAvailable", get_NetAvailable, null);
 		L.RegVar("IsWifi", get_IsWifi, null);
 		L.EndClass();
@@ -444,7 +444,7 @@ public class LuaFramework_UtilWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_DataPath(IntPtr L)
+	static int get_CacheDataPath(IntPtr L)
 	{
 		try
 		{

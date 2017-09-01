@@ -32,12 +32,18 @@ public class TestDelegate: MonoBehaviour
                 end                
             end
 
+			function test111111(a)
+				print(a)
+			end
+
             function SetClick1(listener)
                 if listener.onClick then
                     listener.onClick:Destroy()
                 end
 
-                listener.onClick = DoClick1         
+                listener.onClick = DoClick1
+				GEventDispatcher.Instance:dispatcherEvent('aaaaa', 'a')
+				GEventDispatcher.Instance:addEventListner('bbbbb', test111111)         
             end
 
             function RemoveClick1(listener)
@@ -46,6 +52,7 @@ public class TestDelegate: MonoBehaviour
                 else
                     print('empty delegate')
                 end
+				GEventDispatcher.Instance:dispatcherEvent('bbbbb', 'aaa')
             end
 
             function RemoveClick2(listener)
@@ -60,6 +67,8 @@ public class TestDelegate: MonoBehaviour
             function TestOverride(listener)
                 listener:SetOnFinished(TestEventListener.OnClick(DoClick1))
                 listener:SetOnFinished(TestEventListener.VoidDelegate(DoClick2))
+
+				GEventDispatcher.Instance:removeEventListner('bbbbb', test111111)
             end
 
             function TestEvent()
@@ -147,6 +156,10 @@ public class TestDelegate: MonoBehaviour
     {
         L.BeginModule(null);
         TestEventListenerWrap.Register(state);
+
+		//
+		GEventDispatcherWrap.Register(state);
+
         L.EndModule();
 
         DelegateFactory.dict.Add(typeof(TestEventListener.OnClick), TestEventListener_OnClick);
@@ -154,7 +167,64 @@ public class TestDelegate: MonoBehaviour
 
         DelegateTraits<TestEventListener.OnClick>.Init(TestEventListener_OnClick);
         DelegateTraits<TestEventListener.VoidDelegate>.Init(TestEventListener_VoidDelegate);
-    }
+
+		DelegateFactory.dict.Add (typeof(GEventDispatcher.Listner), EngineGEventDispatcher_Listner);
+		DelegateTraits<GEventDispatcher.Listner>.Init(EngineGEventDispatcher_Listner);
+
+		GEventDispatcher.Instance.addEventListner ("aaaaa", test);
+	}
+
+	public GEventDispatcher.Listner EngineGEventDispatcher_Listner(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			GEventDispatcher.Listner fn = delegate(object param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			EngineGEventDispatcher_Listner_Event target = new EngineGEventDispatcher_Listner_Event(func);
+			GEventDispatcher.Listner d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			EngineGEventDispatcher_Listner_Event target = new EngineGEventDispatcher_Listner_Event(func, self);
+			GEventDispatcher.Listner d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class EngineGEventDispatcher_Listner_Event : LuaDelegate
+	{
+		public EngineGEventDispatcher_Listner_Event(LuaFunction func) : base(func) { }
+		public EngineGEventDispatcher_Listner_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(object param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(object param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public void test(object o) {
+		Debug.Log ("test...................");
+		Debug.Log ("test...................");
+	}
 
     void CallLuaFunction(LuaFunction func)
     {
@@ -269,6 +339,7 @@ public class TestDelegate: MonoBehaviour
             {
                 Debug.Log("empty delegate!!");
             }
+			GEventDispatcher.Instance.dispatcherEvent ("bbbbb", "a------>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
         else if (GUI.Button(new Rect(10, 410, 120, 40), "Override"))
         {

@@ -17,6 +17,7 @@ namespace LuaFramework {
 
             LuaBinder.Bind(lua);
             LuaCoroutine.Register(lua, this);
+			DelegateFactory.Register ();
         }
 
         public void InitStart() {
