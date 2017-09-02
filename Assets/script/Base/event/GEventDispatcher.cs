@@ -28,33 +28,6 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// </summary>
 	private static readonly object singltonLock = new object();
 
-	/// <summary>
-	/// 单例方法
-	/// </summary>
-	/// <value>The instance.</value>
-	public static GEventDispatcher Instance {
-		get { 
-			if (instance != null) {
-				return instance;
-			}
-			lock (singltonLock) {
-				if (instance != null) {
-					return instance;
-				}
-
-				instance = FindObjectOfType<GEventDispatcher> ();
-				if (instance != null) {
-					return instance;
-				}
-
-				GameObject scriptObject = new GameObject ();
-				scriptObject.name = typeof(GEventDispatcher).Name + "_Singleton";
-				DontDestroyOnLoad (scriptObject);
-				instance = scriptObject.AddComponent<GEventDispatcher> ();
-			}
-			return instance;
-		}
-	}
 
 	/// <summary>
 	/// 添加事件监听
@@ -168,6 +141,35 @@ public sealed class GEventDispatcher : MonoBehaviour {
 				continue;
 			}
 			currentListner.Invoke (o);
+		}
+	}
+
+
+	/// <summary>
+	/// 单例方法
+	/// </summary>
+	/// <value>The instance.</value>
+	public static GEventDispatcher Instance {
+		get { 
+			if (instance != null) {
+				return instance;
+			}
+			lock (singltonLock) {
+				if (instance != null) {
+					return instance;
+				}
+
+				instance = FindObjectOfType<GEventDispatcher> ();
+				if (instance != null) {
+					return instance;
+				}
+
+				GameObject scriptObject = new GameObject ();
+				scriptObject.name = typeof(GEventDispatcher).Name + "_Singleton";
+				DontDestroyOnLoad (scriptObject);
+				instance = scriptObject.AddComponent<GEventDispatcher> ();
+			}
+			return instance;
 		}
 	}
 }

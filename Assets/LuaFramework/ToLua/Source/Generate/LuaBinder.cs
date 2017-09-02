@@ -12,6 +12,7 @@ public static class LuaBinder
 		LuaInterface_DebuggerWrap.Register(L);
 		ControllerWrap.Register(L);
 		GEventDispatcherWrap.Register(L);
+		TimerManagerWrap.Register(L);
 		ViewWrap.Register(L);
 		BaseWrap.Register(L);
 		ManagerWrap.Register(L);
@@ -89,11 +90,10 @@ public static class LuaBinder
 		LuaFramework_LuaHelperWrap.Register(L);
 		LuaFramework_ByteBufferWrap.Register(L);
 		LuaFramework_LuaBehaviourWrap.Register(L);
-		LuaFramework_GameManagerWrap.Register(L);
+		LuaFramework_GameManager2Wrap.Register(L);
 		LuaFramework_LuaManagerWrap.Register(L);
 		LuaFramework_PanelManagerWrap.Register(L);
 		LuaFramework_SoundManagerWrap.Register(L);
-		LuaFramework_TimerManagerWrap.Register(L);
 		LuaFramework_ThreadManagerWrap.Register(L);
 		LuaFramework_NetworkManagerWrap.Register(L);
 		LuaFramework_ResourceManagerWrap.Register(L);
@@ -160,6 +160,9 @@ public static class LuaBinder
 		L.EndModule();
 		L.BeginModule("GEventDispatcher");
 		L.RegFunction("Listner", GEventDispatcher_Listner);
+		L.EndModule();
+		L.BeginModule("TimerManager");
+		L.RegFunction("OnTimer", TimerManager_OnTimer);
 		L.EndModule();
 		L.EndModule();
 		L.BeginPreLoad();
@@ -871,6 +874,33 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateTraits<GEventDispatcher.Listner>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int TimerManager_OnTimer(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<TimerManager.OnTimer>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<TimerManager.OnTimer>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

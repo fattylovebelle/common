@@ -547,10 +547,10 @@ namespace LuaFramework {
 
         void OnInitialize() {
             LuaManager.InitStart();
-            LuaManager.DoFile("GameLoader");         //加载游戏
-            LuaManager.DoFile("Logic/Network");      //加载网络
-            NetManager.OnInit();                     //初始化网络
-            Util.CallMethod("GameLoader", "Init");     //初始化完成
+            LuaManager.DoFile("GameEntrence");         //加载游戏
+            //LuaManager.DoFile("Logic/Network");      //加载网络
+            //NetManager.OnInit();                     //初始化网络
+			Util.CallMethod("GameEntrence", "Init");     //初始化完成
 
             initialize = true;
 /*

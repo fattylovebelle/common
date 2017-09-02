@@ -183,7 +183,9 @@
      <Compile Include="Assets\Plugins\FairyUI\Utils\XMLList.cs" />
      <Compile Include="Assets\Plugins\FairyUI\Utils\XMLUtils.cs" />
      <Compile Include="Assets\Plugins\FairyUI\Utils\ZipReader.cs" />
+     <None Include="Assets\GameLua\Egine\目录说明.txt" />
      <None Include="Assets\link.xml" />
+     <None Include="Assets\GameLua\GamesLogic\目录说明.txt" />
      <None Include="Assets\LuaFramework\ToLua\readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -158,7 +158,6 @@ public class TestDelegate: MonoBehaviour
         TestEventListenerWrap.Register(state);
 
 		//
-		GEventDispatcherWrap.Register(state);
 
         L.EndModule();
 

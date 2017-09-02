@@ -43,7 +43,9 @@ public static class CustomSettings
         _DT(typeof(System.Action<int>)),
         _DT(typeof(System.Comparison<int>)),
         _DT(typeof(System.Func<int, int>)),
-		_DT(typeof(GEventDispatcher.Listner))
+		_DT(typeof(GEventDispatcher.Listner)),
+		_DT(typeof(TimerManager.OnTimer)),
+		_DT(typeof(DelayManager.OnDelay))
     };
 
     //在这里添加你要导出注册到lua的类型列表
@@ -162,11 +164,10 @@ public static class CustomSettings
         _GT(typeof(ByteBuffer)),
         _GT(typeof(LuaBehaviour)),
 
-        _GT(typeof(GameManager)),
+        _GT(typeof(GameManager2)),
         _GT(typeof(LuaManager)),
         _GT(typeof(PanelManager)),
         _GT(typeof(SoundManager)),
-        _GT(typeof(TimerManager)),
         _GT(typeof(ThreadManager)),
         _GT(typeof(NetworkManager)),
         _GT(typeof(ResourceManager)),
@@ -223,6 +224,8 @@ public static class CustomSettings
 		//_GT(typeof(TweenUtils)),
 
 		_GT(typeof(GEventDispatcher)),
+		_GT(typeof(TimerManager)),
+		_GT(typeof(DelayManager)),
     };
 
     public static List<Type> dynamicList = new List<Type>()
