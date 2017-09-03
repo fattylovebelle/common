@@ -19,6 +19,14 @@ public class TestDelegateTimer: MonoBehaviour
         function removeTimer()
 			TimerManager.Instance:RemoveTimer(startTimer)
         end
+		
+		function delayRun() 
+			DelayManager.Instance:delay(10, test)
+		end
+
+		function test()
+			print('test delay........')
+		end
     ";
 
     LuaState state = null;
@@ -26,6 +34,8 @@ public class TestDelegateTimer: MonoBehaviour
 
     LuaFunction addTimer = null;
 	LuaFunction removeTimer = null;
+
+	LuaFunction delayRun = null;
    
     //需要删除的转LuaFunction为委托，不需要删除的直接加或者等于即可
     void Awake()
@@ -48,6 +58,7 @@ public class TestDelegateTimer: MonoBehaviour
 
 		addTimer = state.GetFunction("addTimer");
 		removeTimer = state.GetFunction ("removeTimer");
+		delayRun = state.GetFunction ("delayRun");
     }
 
     void Bind(LuaState L)
@@ -55,6 +66,7 @@ public class TestDelegateTimer: MonoBehaviour
         L.BeginModule(null);
 		TestEventListenerTimerWrap.Register(state);
 		TimerManagerWrap.Register (state);
+		DelayManagerWrap.Register (state);
 
         L.EndModule();
 
@@ -67,6 +79,9 @@ public class TestDelegateTimer: MonoBehaviour
 
 		DelegateFactory.dict.Add (typeof(TimerManager.OnTimer), TimerManager_OnTimer);
 		DelegateTraits<TimerManager.OnTimer>.Init(TimerManager_OnTimer);
+
+		DelegateFactory.dict.Add (typeof(DelayManager.OnDelay), DelayManager_OnDelay);
+		DelegateTraits<DelayManager.OnDelay>.Init(DelayManager_OnDelay);
 	}
 
 	public TimerManager.OnTimer TimerManager_OnTimer(LuaFunction func, LuaTable self, bool flag)
@@ -113,6 +128,50 @@ public class TestDelegateTimer: MonoBehaviour
 			func.Push(param0);
 			func.PCall();
 			func.EndPCall();
+		}
+	}
+
+
+	class DelayManager_OnDelay_Event : LuaDelegate
+	{
+		public DelayManager_OnDelay_Event(LuaFunction func) : base(func) { }
+		public DelayManager_OnDelay_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call()
+		{
+			func.Call();
+		}
+
+		public void CallWithSelf()
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public DelayManager.OnDelay DelayManager_OnDelay(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			DelayManager.OnDelay fn = delegate() { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			DelayManager_OnDelay_Event target = new DelayManager_OnDelay_Event(func);
+			DelayManager.OnDelay d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			DelayManager_OnDelay_Event target = new DelayManager_OnDelay_Event(func, self);
+			DelayManager.OnDelay d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
 		}
 	}
 
@@ -191,7 +250,11 @@ public class TestDelegateTimer: MonoBehaviour
         else if (GUI.Button(new Rect(10, 110, 120, 40), "remove Timer"))
         {
 			CallLuaFunction (removeTimer);
-        }
+		}
+		else if (GUI.Button(new Rect(10, 10, 120, 40), "delay run"))
+		{
+			CallLuaFunction (delayRun);
+		}
     }
 
     void Update()
@@ -221,6 +284,7 @@ public class TestDelegateTimer: MonoBehaviour
     {
         SafeRelease(ref addTimer);
 		SafeRelease (ref removeTimer);
+		SafeRelease (ref delayRun);
         state.Dispose();
         state = null;
 #if UNITY_5 || UNITY_2017

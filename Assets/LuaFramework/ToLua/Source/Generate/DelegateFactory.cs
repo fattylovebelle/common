@@ -25,6 +25,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Func<int,int>), factory.System_Func_int_int);
 		dict.Add(typeof(GEventDispatcher.Listner), factory.GEventDispatcher_Listner);
 		dict.Add(typeof(TimerManager.OnTimer), factory.TimerManager_OnTimer);
+		dict.Add(typeof(DelayManager.OnDelay), factory.DelayManager_OnDelay);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -53,6 +54,7 @@ public class DelegateFactory
 		DelegateTraits<System.Func<int,int>>.Init(factory.System_Func_int_int);
 		DelegateTraits<GEventDispatcher.Listner>.Init(factory.GEventDispatcher_Listner);
 		DelegateTraits<TimerManager.OnTimer>.Init(factory.TimerManager_OnTimer);
+		DelegateTraits<DelayManager.OnDelay>.Init(factory.DelayManager_OnDelay);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -81,6 +83,7 @@ public class DelegateFactory
 		TypeTraits<System.Func<int,int>>.Init(factory.Check_System_Func_int_int);
 		TypeTraits<GEventDispatcher.Listner>.Init(factory.Check_GEventDispatcher_Listner);
 		TypeTraits<TimerManager.OnTimer>.Init(factory.Check_TimerManager_OnTimer);
+		TypeTraits<DelayManager.OnDelay>.Init(factory.Check_DelayManager_OnDelay);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -109,6 +112,7 @@ public class DelegateFactory
 		StackTraits<System.Func<int,int>>.Push = factory.Push_System_Func_int_int;
 		StackTraits<GEventDispatcher.Listner>.Push = factory.Push_GEventDispatcher_Listner;
 		StackTraits<TimerManager.OnTimer>.Push = factory.Push_TimerManager_OnTimer;
+		StackTraits<DelayManager.OnDelay>.Push = factory.Push_DelayManager_OnDelay;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
@@ -697,6 +701,59 @@ public class DelegateFactory
 	}
 
 	void Push_TimerManager_OnTimer(IntPtr L, TimerManager.OnTimer o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class DelayManager_OnDelay_Event : LuaDelegate
+	{
+		public DelayManager_OnDelay_Event(LuaFunction func) : base(func) { }
+		public DelayManager_OnDelay_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call()
+		{
+			func.Call();
+		}
+
+		public void CallWithSelf()
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public DelayManager.OnDelay DelayManager_OnDelay(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			DelayManager.OnDelay fn = delegate() { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			DelayManager_OnDelay_Event target = new DelayManager_OnDelay_Event(func);
+			DelayManager.OnDelay d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			DelayManager_OnDelay_Event target = new DelayManager_OnDelay_Event(func, self);
+			DelayManager.OnDelay d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_DelayManager_OnDelay(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(DelayManager.OnDelay), L, pos);
+	}
+
+	void Push_DelayManager_OnDelay(IntPtr L, DelayManager.OnDelay o)
 	{
 		ToLua.Push(L, o);
 	}

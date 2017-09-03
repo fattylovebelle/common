@@ -13,6 +13,7 @@ public static class LuaBinder
 		ControllerWrap.Register(L);
 		GEventDispatcherWrap.Register(L);
 		TimerManagerWrap.Register(L);
+		DelayManagerWrap.Register(L);
 		ViewWrap.Register(L);
 		BaseWrap.Register(L);
 		ManagerWrap.Register(L);
@@ -163,6 +164,9 @@ public static class LuaBinder
 		L.EndModule();
 		L.BeginModule("TimerManager");
 		L.RegFunction("OnTimer", TimerManager_OnTimer);
+		L.EndModule();
+		L.BeginModule("DelayManager");
+		L.RegFunction("OnDelay", DelayManager_OnDelay);
 		L.EndModule();
 		L.EndModule();
 		L.BeginPreLoad();
@@ -901,6 +905,33 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateTraits<TimerManager.OnTimer>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DelayManager_OnDelay(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<DelayManager.OnDelay>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<DelayManager.OnDelay>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;
