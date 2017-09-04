@@ -34,7 +34,7 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="eventType">Event type.</param>
 	/// <param name="listner">Listner.</param>
-	public void addEventListner(string eventType, Listner listner) {
+	public void AddEventListner(string eventType, Listner listner) {
 		if (string.IsNullOrEmpty (eventType)) {
 			return;
 		}
@@ -64,7 +64,7 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="eventType">Event type.</param>
 	/// <param name="listner">Listner.</param>
-	public void removeEventListner(string eventType, Listner listner) {
+	public void RemoveEventListner(string eventType, Listner listner) {
 		if (!listners.ContainsKey (eventType)) {
 			return;
 		}
@@ -90,8 +90,8 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
-	public void dispatchEvent(string eventType, object o) {
-		StartCoroutine (dispatchEventAsy (eventType, o));
+	public void DispatchEvent(string eventType, object o) {
+		StartCoroutine (DispatchEventAsy (eventType, o));
 	}
 
 	/// <summary>
@@ -100,8 +100,8 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
 	/// <param name="delayNum">Delay number.</param>
-	public void delayDispatchEvent(string eventType, object o, float delayNum) {
-		StartCoroutine (dispatchEventAsy (eventType, o, delayNum));
+	public void DelayDispatchEvent(string eventType, object o, float delayNum) {
+		StartCoroutine (DispatchEventAsy (eventType, o, delayNum));
 	}
 
 	/// <summary>
@@ -111,12 +111,12 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
 	/// <param name="delayNum">Delay number.</param>
-	IEnumerator dispatchEventAsy(string eventType, object o, float delayNum) {
+	IEnumerator DispatchEventAsy(string eventType, object o, float delayNum) {
 		if (delayNum <= 0) {
 			delayNum = 0;
 		}
 		yield return new WaitForSeconds(delayNum);
-		StartCoroutine (dispatchEventAsy(eventType, o));
+		StartCoroutine (DispatchEventAsy(eventType, o));
 	}
 
 	/// <summary>
@@ -125,7 +125,7 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// <returns>The event asy.</returns>
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
-	IEnumerator dispatchEventAsy(string eventType, object o) {
+	IEnumerator DispatchEventAsy(string eventType, object o) {
 		if (!listners.ContainsKey (eventType)) {
 			yield break;
 		}

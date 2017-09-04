@@ -6,10 +6,10 @@ NetManager = NetManager or BaseClass()
 function NetManager:__init( ... )
 	-- body
 	print("NetManager init")
-	GEventDispatcher.Instance:addEventListner(CommonEvents.CONNECT_SUCCESS, self.NetConnected)
-	GEventDispatcher.Instance:addEventListner(CommonEvents.CONNECT_FAILT, self.NetConnectFail)
-	GEventDispatcher.Instance:addEventListner(CommonEvents.CONNECT_CLOSE, self.NetClose)
-	GEventDispatcher.Instance:addEventListner(CommonEvents.NET_EXCEPTION, self.NetError)
+	GEventDispatcher.Instance:AddEventListner(CommonEvents.CONNECT_SUCCESS, self.NetConnected)
+	GEventDispatcher.Instance:AddEventListner(CommonEvents.CONNECT_FAILT, self.NetConnectFail)
+	GEventDispatcher.Instance:AddEventListner(CommonEvents.CONNECT_CLOSE, self.NetClose)
+	GEventDispatcher.Instance:AddEventListner(CommonEvents.NET_EXCEPTION, self.NetError)
 
 end
 
@@ -17,10 +17,10 @@ end
 function NetManager:__delete( ... )
 	-- body
 	print("NetManager delete")
-	GEventDispatcher.Instance:removeEventListner(CommonEvents.CONNECT_SUCCESS, self.NetConnected)
-	GEventDispatcher.Instance:removeEventListner(CommonEvents.CONNECT_FAILT, self.NetConnectFail)
-	GEventDispatcher.Instance:removeEventListner(CommonEvents.CONNECT_CLOSE, self.NetClose)
-	GEventDispatcher.Instance:removeEventListner(CommonEvents.NET_EXCEPTION, self.NetError)
+	GEventDispatcher.Instance:RemoveEventListner(CommonEvents.CONNECT_SUCCESS, self.NetConnected)
+	GEventDispatcher.Instance:RemoveEventListner(CommonEvents.CONNECT_FAILT, self.NetConnectFail)
+	GEventDispatcher.Instance:RemoveEventListner(CommonEvents.CONNECT_CLOSE, self.NetClose)
+	GEventDispatcher.Instance:RemoveEventListner(CommonEvents.NET_EXCEPTION, self.NetError)
 end
 
 

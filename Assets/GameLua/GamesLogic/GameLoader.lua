@@ -11,7 +11,9 @@ local isInit = false
 -- 初始化方法
 function GameLoader:__init( ... )
 	-- body
-	GEventDispatcher.Instance:addEventListner(CommonEvents.CONNECT_SUCCESS)
+	-- 监听网络变化
+	GEventDispatcher.Instance:AddEventListner(CommonEvents.CONNECT_SUCCESS, self.ConnectSuccess)
+	-- 连接服务器
 	NetManager.GetInstance():ConnectToServer()
 end
 
@@ -20,6 +22,7 @@ end
 function GameLoader:__delete( ... )
 	-- body
 	print("GameLoader delete")
+	GEventDispatcher.Instance:RemoveEventDispatcher(CommonEvents.CONNECT_SUCCESS)
 end
 
 

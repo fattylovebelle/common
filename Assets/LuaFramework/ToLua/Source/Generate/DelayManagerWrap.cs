@@ -7,7 +7,7 @@ public class DelayManagerWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(DelayManager), typeof(UnityEngine.MonoBehaviour));
-		L.RegFunction("delay", delay);
+		L.RegFunction("Delay", Delay);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Instance", get_Instance, null);
@@ -16,7 +16,7 @@ public class DelayManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int delay(IntPtr L)
+	static int Delay(IntPtr L)
 	{
 		try
 		{
@@ -24,7 +24,7 @@ public class DelayManagerWrap
 			DelayManager obj = (DelayManager)ToLua.CheckObject<DelayManager>(L, 1);
 			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
 			DelayManager.OnDelay arg1 = (DelayManager.OnDelay)ToLua.CheckDelegate<DelayManager.OnDelay>(L, 3);
-			obj.delay(arg0, arg1);
+			obj.Delay(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

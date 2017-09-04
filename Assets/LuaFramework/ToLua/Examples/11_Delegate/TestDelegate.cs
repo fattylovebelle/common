@@ -170,7 +170,7 @@ public class TestDelegate: MonoBehaviour
 		DelegateFactory.dict.Add (typeof(GEventDispatcher.Listner), EngineGEventDispatcher_Listner);
 		DelegateTraits<GEventDispatcher.Listner>.Init(EngineGEventDispatcher_Listner);
 
-		GEventDispatcher.Instance.addEventListner ("aaaaa", test);
+		GEventDispatcher.Instance.AddEventListner ("aaaaa", test);
 	}
 
 	public GEventDispatcher.Listner EngineGEventDispatcher_Listner(LuaFunction func, LuaTable self, bool flag)
@@ -338,7 +338,7 @@ public class TestDelegate: MonoBehaviour
             {
                 Debug.Log("empty delegate!!");
             }
-			GEventDispatcher.Instance.dispatchEvent ("bbbbb", "a------>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			GEventDispatcher.Instance.DispatchEvent ("bbbbb", "a------>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
         else if (GUI.Button(new Rect(10, 410, 120, 40), "Override"))
         {

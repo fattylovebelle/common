@@ -13,3 +13,10 @@ function GameEntrance.Init()
 	print("GameEntrence aa")
 	this.gameLoader = GameLoader.GetInstance()
 end
+
+-- 销毁
+function GameEntrance.delete( ... )
+	-- body
+	this.gameLoader.Destroy()
+	this.gameLoader = nil
+end

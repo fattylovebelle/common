@@ -29,8 +29,8 @@ public class DelayManager : MonoBehaviour{
 	/// </summary>
 	/// <param name="onDelay">On delay.</param>
 	/// <param name="param">Parameter.</param>
-	public void delay(float delayTime, OnDelay onDelay) {
-		StartCoroutine (delayRun (delayTime, onDelay));
+	public void Delay(float delayTime, OnDelay onDelay) {
+		StartCoroutine (DelayRun (delayTime, onDelay));
 	}
 
 
@@ -40,7 +40,7 @@ public class DelayManager : MonoBehaviour{
 	/// <returns>The run.</returns>
 	/// <param name="delayTime">Delay time.</param>
 	/// <param name="onDelay">On delay.</param>
-	IEnumerator delayRun(float delayTime, OnDelay onDelay) {
+	IEnumerator DelayRun(float delayTime, OnDelay onDelay) {
 		if (onDelay == null) {
 			yield break;
 		}
