@@ -9,8 +9,8 @@ public class GEventDispatcherWrap
 		L.BeginClass(typeof(GEventDispatcher), typeof(UnityEngine.MonoBehaviour));
 		L.RegFunction("addEventListner", addEventListner);
 		L.RegFunction("removeEventListner", removeEventListner);
-		L.RegFunction("dispatcherEvent", dispatcherEvent);
-		L.RegFunction("delayDispatcherEvent", delayDispatcherEvent);
+		L.RegFunction("dispatchEvent", dispatchEvent);
+		L.RegFunction("delayDispatchEvent", delayDispatchEvent);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Instance", get_Instance, null);
@@ -55,7 +55,7 @@ public class GEventDispatcherWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int dispatcherEvent(IntPtr L)
+	static int dispatchEvent(IntPtr L)
 	{
 		try
 		{
@@ -63,7 +63,7 @@ public class GEventDispatcherWrap
 			GEventDispatcher obj = (GEventDispatcher)ToLua.CheckObject(L, 1, typeof(GEventDispatcher));
 			string arg0 = ToLua.CheckString(L, 2);
 			object arg1 = ToLua.ToVarObject(L, 3);
-			obj.dispatcherEvent(arg0, arg1);
+			obj.dispatchEvent(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -73,7 +73,7 @@ public class GEventDispatcherWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int delayDispatcherEvent(IntPtr L)
+	static int delayDispatchEvent(IntPtr L)
 	{
 		try
 		{
@@ -82,7 +82,7 @@ public class GEventDispatcherWrap
 			string arg0 = ToLua.CheckString(L, 2);
 			object arg1 = ToLua.ToVarObject(L, 3);
 			float arg2 = (float)LuaDLL.luaL_checknumber(L, 4);
-			obj.delayDispatcherEvent(arg0, arg1, arg2);
+			obj.delayDispatchEvent(arg0, arg1, arg2);
 			return 0;
 		}
 		catch (Exception e)

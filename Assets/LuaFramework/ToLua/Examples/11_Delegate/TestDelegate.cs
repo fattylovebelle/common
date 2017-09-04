@@ -42,7 +42,7 @@ public class TestDelegate: MonoBehaviour
                 end
 
                 listener.onClick = DoClick1
-				GEventDispatcher.Instance:dispatcherEvent('aaaaa', 'a')
+				GEventDispatcher.Instance:dispatchEvent('aaaaa', 'a')
 				GEventDispatcher.Instance:addEventListner('bbbbb', test111111)         
             end
 
@@ -52,7 +52,7 @@ public class TestDelegate: MonoBehaviour
                 else
                     print('empty delegate')
                 end
-				GEventDispatcher.Instance:dispatcherEvent('bbbbb', 'aaa')
+				GEventDispatcher.Instance:dispatchEvent('bbbbb', 'aaa')
             end
 
             function RemoveClick2(listener)
@@ -338,7 +338,7 @@ public class TestDelegate: MonoBehaviour
             {
                 Debug.Log("empty delegate!!");
             }
-			GEventDispatcher.Instance.dispatcherEvent ("bbbbb", "a------>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			GEventDispatcher.Instance.dispatchEvent ("bbbbb", "a------>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
         else if (GUI.Button(new Rect(10, 410, 120, 40), "Override"))
         {

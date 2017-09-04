@@ -86,19 +86,19 @@ namespace LuaFramework {
 			switch (_event) {
 			// 连接失败，需要重新发送事件
 			case Protocal.ConnectFail:
-				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_FAILT, CommonEvents.CONNECT_FAILT);
+				GEventDispatcher.Instance.dispatchEvent (CommonEvents.CONNECT_FAILT, CommonEvents.CONNECT_FAILT);
 				break;
 				// socket断线
 			case Protocal.Disconnect:
-				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_CLOSE, CommonEvents.CONNECT_CLOSE);
+				GEventDispatcher.Instance.dispatchEvent (CommonEvents.CONNECT_CLOSE, CommonEvents.CONNECT_CLOSE);
 				break;
 				// 出现异常
 			case Protocal.Exception:
-				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.NET_EXCEPTION, CommonEvents.NET_EXCEPTION);
+				GEventDispatcher.Instance.dispatchEvent (CommonEvents.NET_EXCEPTION, CommonEvents.NET_EXCEPTION);
 				break;
 				// 连接成功
 			case Protocal.Connect:
-				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_SUCCESS, CommonEvents.CONNECT_SUCCESS);
+				GEventDispatcher.Instance.dispatchEvent (CommonEvents.CONNECT_SUCCESS, CommonEvents.CONNECT_SUCCESS);
 				break;
 			default:
 				// 收到协议消息

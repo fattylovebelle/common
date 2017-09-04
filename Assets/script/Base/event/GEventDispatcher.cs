@@ -90,7 +90,7 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
-	public void dispatcherEvent(string eventType, object o) {
+	public void dispatchEvent(string eventType, object o) {
 		StartCoroutine (dispatchEventAsy (eventType, o));
 	}
 
@@ -100,7 +100,7 @@ public sealed class GEventDispatcher : MonoBehaviour {
 	/// <param name="eventType">Event type.</param>
 	/// <param name="o">O.</param>
 	/// <param name="delayNum">Delay number.</param>
-	public void delayDispatcherEvent(string eventType, object o, float delayNum) {
+	public void delayDispatchEvent(string eventType, object o, float delayNum) {
 		StartCoroutine (dispatchEventAsy (eventType, o, delayNum));
 	}
 

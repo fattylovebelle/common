@@ -48,7 +48,6 @@ namespace LuaFramework {
         /// <param name="fileName"></param>
         /// <returns></returns>
         public override byte[] ReadFile(string fileName) {
-			Debug.Log ("lua文件 fileName = " + fileName);
             return base.ReadFile(fileName);
         }
     }

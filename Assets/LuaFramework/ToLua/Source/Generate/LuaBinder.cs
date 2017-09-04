@@ -14,6 +14,7 @@ public static class LuaBinder
 		GEventDispatcherWrap.Register(L);
 		TimerManagerWrap.Register(L);
 		DelayManagerWrap.Register(L);
+		CommonEventsWrap.Register(L);
 		ViewWrap.Register(L);
 		BaseWrap.Register(L);
 		ManagerWrap.Register(L);

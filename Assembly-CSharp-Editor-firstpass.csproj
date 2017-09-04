@@ -58,7 +58,7 @@
      <Compile Include="Assets\Plugins\FairyUI\Editor\UIContentScalerEditor.cs" />
      <Compile Include="Assets\Plugins\FairyUI\Editor\UIPainterEditor.cs" />
      <Compile Include="Assets\Plugins\FairyUI\Editor\UIPanelEditor.cs" />
-     <None Include="Assets\GameLua\Egine\目录说明.txt" />
+     <None Include="Assets\GameLua\Engine\目录说明.txt" />
      <None Include="Assets\link.xml" />
      <None Include="Assets\StreamingAssets\files.txt" />
      <None Include="Assets\GameLua\GamesLogic\目录说明.txt" />

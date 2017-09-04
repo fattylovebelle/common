@@ -227,6 +227,7 @@ public static class CustomSettings
 		_GT(typeof(GEventDispatcher)),
 		_GT(typeof(TimerManager)),
 		_GT(typeof(DelayManager)),
+		_GT(typeof(CommonEvents)),
     };
 
     public static List<Type> dynamicList = new List<Type>()
