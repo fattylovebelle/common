@@ -220,7 +220,7 @@ namespace LuaFramework {
         /// </summary>
         public void OnResourceInited() {
 #if ASYNC_MODE
-            ResManager.Initialize(AppConst.AssetDir, delegate() {
+			ResourceManager.Instance.Initialize(AppConst.AssetDir, delegate() {
                 Debug.Log("Initialize OK!!!");
                 this.OnInitialize();
             });

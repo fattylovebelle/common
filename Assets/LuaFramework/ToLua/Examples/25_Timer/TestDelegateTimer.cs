@@ -65,8 +65,8 @@ public class TestDelegateTimer: MonoBehaviour
     {
         L.BeginModule(null);
 		TestEventListenerTimerWrap.Register(state);
-		TimerManagerWrap.Register (state);
-		DelayManagerWrap.Register (state);
+		//TimerManagerWrap.Register (state);
+		//DelayManagerWrap.Register (state);
 
         L.EndModule();
 

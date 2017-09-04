@@ -28,7 +28,7 @@ namespace LuaFramework {
             if (Parent.FindChild(name) != null) return;
 
 #if ASYNC_MODE
-            ResManager.LoadPrefab(abName, assetName, delegate(UnityEngine.Object[] objs) {
+			ResourceManager.Instance.LoadPrefab(abName, assetName, delegate(UnityEngine.Object[] objs) {
                 if (objs.Length == 0) return;
                 GameObject prefab = objs[0] as GameObject;
                 if (prefab == null) return;

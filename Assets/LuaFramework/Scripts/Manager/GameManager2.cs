@@ -9,23 +9,21 @@ using System.IO;
 
 namespace LuaFramework {
     public class GameManager2 : Manager {
+
+		/// <summary>
+		/// 网络资源下载下来的时候，会以\r\n结尾
+		/// </summary>
 		public const string CHAR_N = "\n";
 		public const string CHAR_R = "\r";
 
         protected static bool initialize = false;
-        private List<string> downloadFiles = new List<string>();
 
-        public List<string> moduleABPaths = new List<string>();// 对skgame lua的modules下的lua ab文件进行收集用在luamanager中进行载入包检查
-
-        public int fileCout = 1; // 总文件量
-        public int num = 0;//当前进入量
-
-        private float step = 0; //假的步进
 
         /// 初始化游戏管理器
         void Awake() {
             Init();
         }
+
         /// 初始化
         void Init() {
             DontDestroyOnLoad(gameObject);  //防止销毁自己
@@ -38,14 +36,6 @@ namespace LuaFramework {
         
         /// 释放资源
         public void CheckExtractResource() {
-//            bool isExists = Directory.Exists(Util.DataPath) &&
-//              Directory.Exists(Util.DataPath + "lua/") && File.Exists(Util.DataPath + "files.txt");
-//            if (isExists || AppConst.DebugMode) {
-//                StartCoroutine(OnUpdateResource());
-//                return;   //文件已经解压过了，自己可添加检查文件列表逻辑
-//            }
-//            StartCoroutine(OnExtractResource());    //启动释放协成 
-
 			StartCoroutine (dowloadFiles ());
         }
 
@@ -54,10 +44,10 @@ namespace LuaFramework {
 		/// </summary>
 		/// <returns>The files.</returns>
 		IEnumerator dowloadFiles() {
-			//if (AppConst.DebugMode) {
-			//	OnResourceInited ();
-			//	yield break;
-			//}
+			if (AppConst.DebugMode) {
+				OnResourceInited ();
+				yield break;
+			}
 
 			// 如果缓存文件里面没有内容，就把app内的文件copy到缓存里面
 			string cacheFiles = Util.CacheDataPath + AppConst.File_LIST;
@@ -281,260 +271,12 @@ namespace LuaFramework {
 
 
 
-        IEnumerator OnExtractResource() {
-            string dataPath = Util.CacheDataPath;  //数据目录
-			Debug.Log("数据目录======>>>>" + dataPath);
-			string resPath = Util.AppContentPath(); //游戏包资源目录
-			Debug.Log("数据目录======>>>>" + resPath);
-
-            if (Directory.Exists(dataPath)) Directory.Delete(dataPath, true);
-            Directory.CreateDirectory(dataPath);
-
-            string infile = resPath + "files.txt";
-            string outfile = dataPath + "files.txt";
-            if (File.Exists(outfile)) File.Delete(outfile);
-
-            string message = "正在分析资源中..." + infile;
-            //GlobalDispatcher.GetInstance().DispatchEvent(NotiConst.LOADER_PROGRESS, message); //Debug.Log(infile + "|" outfile);
-            if (Application.platform == RuntimePlatform.Android) {
-                WWW www = new WWW(infile);
-                yield return www;
-                if (www.isDone) {
-                    File.WriteAllBytes(outfile, www.bytes);
-                }
-                yield return 0;
-            } else File.Copy(infile, outfile, true);
-            yield return new WaitForEndOfFrame();
-
-            //释放所有文件到数据目录
-            string[] files = File.ReadAllLines(outfile);
-            fileCout = files.Length;
-            foreach (var file in files) {
-                string[] fs = file.Split('|');
-                infile = resPath + fs[0];
-                outfile = dataPath + fs[0];
-                num++;
-                message = "正在解包文件中..." + infile;
-                facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
-                int per = Mathf.FloorToInt((num * 100 / fileCout));
-                if (per >= 96)
-                {
-                    message = "连接游戏服务器中..." + infile;
-                    per = 96;
-                }
-                //GlobalDispatcher.GetInstance().DispatchEvent(NotiConst.LOADER_PROGRESS, message + "|" + per);
-                string dir = Path.GetDirectoryName(outfile);
-                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                if (Application.platform == RuntimePlatform.Android) {
-                    WWW www = new WWW(infile);
-                    yield return www;
-
-                    if (www.isDone) {
-                        File.WriteAllBytes(outfile, www.bytes);
-                    }
-                    yield return 0;
-                } else {
-                    if (File.Exists(outfile)) {
-                        File.Delete(outfile);
-                    }
-                    File.Copy(infile, outfile, true);
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            message = "解包完成!        ";
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
-            //GlobalDispatcher.GetInstance().DispatchEvent(NotiConst.LOADER_COMPLETED, message + "|" + 100);
-            yield return new WaitForSeconds(0.02f);
-
-            message = string.Empty;
-            //释放完成，开始启动更新资源
-            StartCoroutine(OnUpdateResource());
-        }
-
-        /// <summary>
-        /// 启动更新下载，这里只是个思路演示，此处可启动线程下载更新
-        /// </summary>
-        IEnumerator OnUpdateResource() {
-            if (!AppConst.UpdateMode) {
-                OnResourceInited();
-                yield break;
-            }
-			LocalfilesDicMd5();
-            string dataPath = Util.CacheDataPath;  //数据目录
-            string url = AppConst.WebUrl;
-            string message = string.Empty;
-            string random = DateTime.Now.ToString("yyyymmddhhmmss");
-            string listUrl = url + "files.txt?v=" + random;
-            Debug.Log("LoadUpdate---->>>" + listUrl+ "||" + dataPath);
-            
-            WWW www = new WWW(listUrl);
-            yield return www;
-            if (www.error != null) {
-                OnUpdateFailed(string.Empty);
-                yield break;
-            }
-            if (!Directory.Exists(dataPath)) {
-                Directory.CreateDirectory(dataPath);
-            }
-            //File.WriteAllBytes(dataPath + "files.txt", www.bytes);
-            string filesText = www.text;
-			string[] files = filesText.Split(CHAR_N.ToCharArray());
-            int count = files.Length;
-            num = count + num;
-            for (int i = 0; i < count; i++)
-            {
-                if (string.IsNullOrEmpty(files[i])) continue;
-                string[] keyValue = files[i].Split('|');
-                string f = keyValue[0];
-                string localfile = (dataPath + f).Trim();
-                string path = Path.GetDirectoryName(localfile);
-                if (!Directory.Exists(path)) {
-                    Directory.CreateDirectory(path);
-                }
-                string fileUrl = url + f + "?v=" + random;
-
-                //收集modules中的功能lua ab文件路径 //Debug.Log("添加："+f);
-                if (!string.IsNullOrEmpty(f) && f.IndexOf("lua/lua_skgame_modules_") != -1)
-                {
-                    if(f.IndexOf(".manifest") == -1)
-                        moduleABPaths.Add(f);
-                }
-
-                bool canUpdate = !File.Exists(localfile);
-                if (!canUpdate) {//检查是否更新
-                    string remoteMd5 = keyValue[1].Trim();
-					string localMd5 = GetDicMd5(keyValue[0].Trim());//Util.md5file(localfile);
-                    canUpdate = !remoteMd5.Equals(localMd5);
-                    if (canUpdate) File.Delete(localfile);
-                }
-                //Debug.Log(fileUrl);
-                if(fileUrl.IndexOf("lua.unity3d") > -1)
-                {
-                    Debug.Log(fileUrl);
-                }
-                if (canUpdate) {   //本地缺少文件
-                    message = "加载文件中...";
-                    facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
-                    /*
-                    www = new WWW(fileUrl); yield return www;
-                    if (www.error != null) {
-                        OnUpdateFailed(path);   //
-                        yield break;
-                    }
-                    File.WriteAllBytes(localfile, www.bytes);
-                    //*/
-                    //这里都是资源文件，用线程下载
-                    BeginDownload(fileUrl, localfile);
-
-                    int per = Mathf.FloorToInt((num * 100 / fileCout));
-                    
-                    if (per >= 100)
-                    {
-                        message = "解析资源文件中...";
-                        
-                        per = (int)Mathf.Min(step+=UnityEngine.Random.Range(0.01f, 0.2f), 100f);
-                    }
-                    //GlobalDispatcher.GetInstance().DispatchEvent(NotiConst.LOADER_PROGRESS, message + "|" + per);
-
-                    while (!(IsDownOK(localfile))) { yield return new WaitForEndOfFrame(); }
-                }
-            }
-            yield return new WaitForEndOfFrame();
-			File.WriteAllBytes(dataPath + "files.txt", www.bytes);
-            message = " 更新完成!!";
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
-            //GlobalDispatcher.GetInstance().DispatchEvent(NotiConst.LOADER_COMPLETED, message);
-            OnResourceInited();
-        }
-
-        private static Dictionary<String, String> dic = new Dictionary<String, String>();
-		/// <summary>
-		/// 计算本地files的MD5值
-		/// </summary>
-		public static string GetDicMd5(string file) {
-			try {
-				if (dic.ContainsKey(file) == true) {
-					return dic[file];
-				}
-				return "";
-			} catch (Exception ex) {
-				throw new Exception("md5file() fail, error:" + ex.Message);
-			}
-		}
-        /// <summary>
-        /// 计算本地files的MD5值
-        /// </summary>
-        public static void LocalfilesDicMd5() {
-            try {
-                String localfileName = Util.CacheDataPath + "files.txt";
-                if (File.Exists(localfileName)) {
-                    string filesText = File.ReadAllText(localfileName);
-					string[] files = filesText.Split(CHAR_N.ToCharArray());
-                    int count = files.Length;
-                    //num = count + num;
-                    for (int i = 0; i < count; i++)
-                    {
-						if (string.IsNullOrEmpty(files[i])) continue;
-						string fileMd5Str = files[i].Trim();
-						string[] keyValue = fileMd5Str.Split('|');
-						if (!dic.ContainsKey(keyValue[0])) {
-							dic.Add(keyValue[0], keyValue[1]);
-						}
-                    }
-                }
-                //if (dic.ContainsKey(file) == true) {
-                //    return dic[file]
-                //}
-                //return "";
-            } catch (Exception ex) {
-                throw new Exception("md5file() fail, error:" + ex.Message);
-            }
-        }
-
-        void OnUpdateFailed(string file) {
-            string message = "[" + file + "] 更新失败,请重新登录试试!";
-			Debug.Log (message);
-            facade.SendMessageCommand(NotiConst.UPDATE_MESSAGE, message);
-        }
-
-        /// <summary>
-        /// 是否下载完成
-        /// </summary>
-        bool IsDownOK(string file) {
-            return downloadFiles.Contains(file);
-        }
-
-        /// <summary>
-        /// 线程下载
-        /// </summary>
-        void BeginDownload(string url, string file) {     //线程下载
-            object[] param = new object[2] { url, file };
-            ThreadEvent ev = new ThreadEvent();
-            ev.Key = NotiConst.UPDATE_DOWNLOAD;
-            ev.evParams.AddRange(param);
-            ThreadManager.AddEvent(ev, OnThreadCompleted);   //线程下载
-        }
-
-        /// <summary>
-        /// 线程完成
-        /// </summary>
-        /// <param name="data"></param>
-        void OnThreadCompleted(NotiData data) {
-            switch (data.evName) {
-                case NotiConst.UPDATE_EXTRACT:  //解压一个完成
-                    break;
-                case NotiConst.UPDATE_DOWNLOAD: //下载一个完成
-                    downloadFiles.Add(data.evParam.ToString());
-                    break;
-            }
-        }
-
         /// <summary>
         /// 资源初始化结束
         /// </summary>
         public void OnResourceInited() {
 #if ASYNC_MODE
-            ResManager.Initialize(AppConst.AssetDir, delegate() {
+			ResourceManager.Instance.Initialize(AppConst.AssetDir, delegate() {
                 Debug.Log("================>All Initialize OK!!!<====================");
                 this.OnInitialize();
                 Screen.sleepTimeout = 30;//休眠
@@ -547,10 +289,10 @@ namespace LuaFramework {
 
         void OnInitialize() {
             LuaManager.InitStart();
-            LuaManager.DoFile("GameEntrence");         //加载游戏
+			LuaManager.DoFile("GameEntrance");         //加载游戏
             //LuaManager.DoFile("Logic/Network");      //加载网络
             //NetManager.OnInit();                     //初始化网络
-			Util.CallMethod("GameEntrence", "Init");     //初始化完成
+			Util.CallMethod("GameEntrance", "Init");     //初始化完成
 
             initialize = true;
 /*

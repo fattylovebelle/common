@@ -27,12 +27,51 @@ namespace LuaFramework {
         Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
         Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
 
+		/// <summary>
+		/// 单例
+		/// </summary>
+		private static ResourceManager instance;
+
+		/// <summary>
+		/// 线程锁
+		/// </summary>
+		private static readonly object singltonLock = new object();
+
         class LoadAssetRequest {
             public Type assetType;
             public string[] assetNames;
             public LuaFunction luaFunc;
             public Action<UObject[]> sharpFunc;
         }
+
+
+		/// <summary>
+		/// 单例方法
+		/// </summary>
+		/// <value>The instance.</value>
+		public static ResourceManager Instance {
+			get { 
+				if (instance != null) {
+					return instance;
+				}
+				lock (singltonLock) {
+					if (instance != null) {
+						return instance;
+					}
+
+					instance = FindObjectOfType<ResourceManager> ();
+					if (instance != null) {
+						return instance;
+					}
+
+					GameObject scriptObject = new GameObject ();
+					scriptObject.name = typeof(ResourceManager).Name + "_Singleton";
+					DontDestroyOnLoad (scriptObject);
+					instance = scriptObject.AddComponent<ResourceManager> ();
+				}
+				return instance;
+			}
+		}
 
         // Load AssetBundleManifest.
         public void Initialize(string manifestName, Action initOK) {

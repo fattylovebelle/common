@@ -83,7 +83,7 @@ public class LuaPackager : BasePackager {
 		string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
 		if (!Directory.Exists(streamDir)) Directory.CreateDirectory(streamDir);
 
-		string[] srcDirs = { CustomSettings.luaDir, CustomSettings.FrameworkPath + "/ToLua/Lua" };
+		string[] srcDirs = { CustomSettings.luaDir, CustomSettings.FrameworkPath + "/ToLua/Lua", CustomSettings.GameLuaPath };
 		for (int i = 0; i < srcDirs.Length; i++) {
 			if (AppConst.LuaByteMode) {
 				string sourceDir = srcDirs[i];
@@ -185,6 +185,9 @@ public class LuaPackager : BasePackager {
 
 		for (int i = 0; i < files.Length; i++) {
 			files[i] = files[i].Replace('\\', '/');
+			if (files [i].Contains ("/util.lua") == true) {
+				UnityEngine.Debug.Log ("util.lua");
+			}
 		}
 		AssetBundleBuild build = new AssetBundleBuild();
 		build.assetBundleName = bundleName;

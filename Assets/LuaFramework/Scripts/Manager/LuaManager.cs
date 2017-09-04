@@ -74,6 +74,7 @@ namespace LuaFramework {
                 string rootPath = AppConst.FrameworkRoot;
                 lua.AddSearchPath(rootPath + "/Lua");
                 lua.AddSearchPath(rootPath + "/ToLua/Lua");
+				lua.AddSearchPath (AppConst.GameLuaRoot);
             } else {
 				// 因为没有把app自带的资源放到Cache目录下面
 				// 所以Lua在加载的时候，如果无法加载到lua文件

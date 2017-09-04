@@ -18,6 +18,46 @@ namespace LuaFramework {
             }
         }
 
+
+		/// <summary>
+		/// 单例
+		/// </summary>
+		private static NetworkManager instance;
+
+		/// <summary>
+		/// 线程锁
+		/// </summary>
+		private static readonly object singltonLock = new object();
+
+
+		/// <summary>
+		/// 单例方法
+		/// </summary>
+		/// <value>The instance.</value>
+		public static NetworkManager Instance {
+			get { 
+				if (instance != null) {
+					return instance;
+				}
+				lock (singltonLock) {
+					if (instance != null) {
+						return instance;
+					}
+
+					instance = FindObjectOfType<NetworkManager> ();
+					if (instance != null) {
+						return instance;
+					}
+
+					GameObject scriptObject = new GameObject ();
+					scriptObject.name = typeof(NetworkManager).Name + "_Singleton";
+					DontDestroyOnLoad (scriptObject);
+					instance = scriptObject.AddComponent<NetworkManager> ();
+				}
+				return instance;
+			}
+		}
+
         void Awake() {
             Init();
         }
@@ -43,9 +83,30 @@ namespace LuaFramework {
 
         ///------------------------------------------------------------------------------------
         public static void AddEvent(int _event, ByteBuffer data) {
-            lock (m_lockObject) {
-                mEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
-            }
+			switch (_event) {
+			// 连接失败，需要重新发送事件
+			case Protocal.ConnectFail:
+				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_FAILT, CommonEvents.CONNECT_FAILT);
+				break;
+				// socket断线
+			case Protocal.Disconnect:
+				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_CLOSE, CommonEvents.CONNECT_CLOSE);
+				break;
+				// 出现异常
+			case Protocal.Exception:
+				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.NET_EXCEPTION, CommonEvents.NET_EXCEPTION);
+				break;
+				// 连接成功
+			case Protocal.Connect:
+				GEventDispatcher.Instance.dispatcherEvent (CommonEvents.CONNECT_SUCCESS, CommonEvents.CONNECT_SUCCESS);
+				break;
+			default:
+				// 收到协议消息
+				lock (m_lockObject) {
+					mEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
+				}
+				break;
+			}
         }
 
         /// <summary>

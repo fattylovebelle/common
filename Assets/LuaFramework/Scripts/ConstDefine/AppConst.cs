@@ -32,23 +32,28 @@ namespace LuaFramework {
         public const string WebUrl = "http://localhost:8080/common/";      //测试更新地址
 
         public static string UserId = string.Empty;                 //用户ID
+
         public static int SocketPort = 0;                           //Socket服务器端口
         public static string SocketAddress = string.Empty;          //Socket服务器地址
 
-        public static string FrameworkRoot {
-            get {
-                return Application.dataPath + "/" + AppName;
-            }
-        }
 
-		/// <summary>
-		/// 文件列表
-		/// </summary>
-		public const string File_LIST = "files.txt";
+		public const string File_LIST = "files.txt";				//文件列表
 
-		// ui ab资源的数据后缀
-		public const string uiDataSubfix = "_desc" + ExtName;
-		// ui ab资源的资源后缀
-		public const string uiResSubfix = "_res" + ExtName;
+		public const string uiDataSubfix = "_desc" + ExtName;		//ui ab资源的数据后缀
+		public const string uiResSubfix = "_res" + ExtName;			//ui ab资源的资源后缀
+
+
+		public static string FrameworkRoot {
+			get {
+				return Application.dataPath + "/" + AppName;
+			}
+		}
+
+
+		public static string GameLuaRoot {
+			get {
+				return Application.dataPath + "/GameLua/";
+			}
+		}
     }
 }

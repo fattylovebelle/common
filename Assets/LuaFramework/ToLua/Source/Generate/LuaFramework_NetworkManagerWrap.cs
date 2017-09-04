@@ -15,6 +15,7 @@ public class LuaFramework_NetworkManagerWrap
 		L.RegFunction("SendMessage", SendMessage);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
+		L.RegVar("Instance", get_Instance, null);
 		L.EndClass();
 	}
 
@@ -169,6 +170,20 @@ public class LuaFramework_NetworkManagerWrap
 			UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 2);
 			bool o = arg0 == arg1;
 			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_Instance(IntPtr L)
+	{
+		try
+		{
+			ToLua.Push(L, LuaFramework.NetworkManager.Instance);
 			return 1;
 		}
 		catch (Exception e)

@@ -8,16 +8,11 @@ public class LuaFramework_GameManager2Wrap
 	{
 		L.BeginClass(typeof(LuaFramework.GameManager2), typeof(Manager));
 		L.RegFunction("CheckExtractResource", CheckExtractResource);
-		L.RegFunction("GetDicMd5", GetDicMd5);
-		L.RegFunction("LocalfilesDicMd5", LocalfilesDicMd5);
 		L.RegFunction("OnResourceInited", OnResourceInited);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("CHAR_N", get_CHAR_N, null);
 		L.RegVar("CHAR_R", get_CHAR_R, null);
-		L.RegVar("moduleABPaths", get_moduleABPaths, set_moduleABPaths);
-		L.RegVar("fileCout", get_fileCout, set_fileCout);
-		L.RegVar("num", get_num, set_num);
 		L.EndClass();
 	}
 
@@ -29,38 +24,6 @@ public class LuaFramework_GameManager2Wrap
 			ToLua.CheckArgsCount(L, 1);
 			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)ToLua.CheckObject<LuaFramework.GameManager2>(L, 1);
 			obj.CheckExtractResource();
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetDicMd5(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = LuaFramework.GameManager2.GetDicMd5(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LocalfilesDicMd5(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 0);
-			LuaFramework.GameManager2.LocalfilesDicMd5();
 			return 0;
 		}
 		catch (Exception e)
@@ -128,120 +91,6 @@ public class LuaFramework_GameManager2Wrap
 		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_moduleABPaths(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			System.Collections.Generic.List<string> ret = obj.moduleABPaths;
-			ToLua.PushSealed(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index moduleABPaths on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_fileCout(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			int ret = obj.fileCout;
-			LuaDLL.lua_pushinteger(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index fileCout on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_num(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			int ret = obj.num;
-			LuaDLL.lua_pushinteger(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index num on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_moduleABPaths(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			System.Collections.Generic.List<string> arg0 = (System.Collections.Generic.List<string>)ToLua.CheckObject(L, 2, typeof(System.Collections.Generic.List<string>));
-			obj.moduleABPaths = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index moduleABPaths on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_fileCout(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			obj.fileCout = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index fileCout on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_num(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			LuaFramework.GameManager2 obj = (LuaFramework.GameManager2)o;
-			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			obj.num = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index num on a nil value");
 		}
 	}
 }

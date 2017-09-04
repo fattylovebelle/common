@@ -29,6 +29,7 @@ public class LuaFramework_AppConstWrap
 		L.RegVar("uiDataSubfix", get_uiDataSubfix, null);
 		L.RegVar("uiResSubfix", get_uiResSubfix, null);
 		L.RegVar("FrameworkRoot", get_FrameworkRoot, null);
+		L.RegVar("GameLuaRoot", get_GameLuaRoot, null);
 		L.EndClass();
 	}
 
@@ -230,6 +231,20 @@ public class LuaFramework_AppConstWrap
 		try
 		{
 			LuaDLL.lua_pushstring(L, LuaFramework.AppConst.FrameworkRoot);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_GameLuaRoot(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, LuaFramework.AppConst.GameLuaRoot);
 			return 1;
 		}
 		catch (Exception e)

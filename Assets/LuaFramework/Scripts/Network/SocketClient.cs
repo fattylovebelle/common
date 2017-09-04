@@ -65,7 +65,8 @@ public class SocketClient {
             client.NoDelay = true;
             client.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
         } catch (Exception e) {
-            Close(); Debug.LogError(e.Message);
+			Close(); Debug.LogError(e.Message);
+			NetworkManager.AddEvent (Protocal.ConnectFail, new ByteBuffer ());
         }
     }
 
