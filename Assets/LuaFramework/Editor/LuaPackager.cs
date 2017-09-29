@@ -262,6 +262,39 @@ public class LuaPackager : BasePackager {
 		EditorUtility.DisplayProgressBar(title, desc, value);
 	}
 
+
+	[MenuItem("LuaFramework/Build Protobuf-lua-gen File")]
+	public static void BuildProtobufFile() {
+		string dir = AppDataPath + "/" +　AppConst.AppName + "/Lua/3rd/pblua";
+		paths.Clear(); 
+		files.Clear(); 
+		Recursive(dir);
+
+		string protoc = "C:/soft/protocbuf/protobuf_3.0.0/src/protoc.exe";
+		string protoc_gen_dir = "\"C:/soft/protocbuf/lua/lua_protobuf/protoc-gen-lua-master/plugin/protoc-gen-lua.bat\"";
+
+		foreach (string f in files) {
+			string name = Path.GetFileName(f);
+			string ext = Path.GetExtension(f);
+			if (!ext.Equals (".proto")) {
+				continue;
+			}
+
+			ProcessStartInfo info = new ProcessStartInfo();
+			info.FileName = protoc;
+			info.Arguments = " --lua_out=./ --plugin=protoc-gen-lua=" + protoc_gen_dir + " " + name;
+			info.WindowStyle = ProcessWindowStyle.Hidden;
+			info.UseShellExecute = true;
+			info.WorkingDirectory = dir;
+			info.ErrorDialog = true;
+			Util.Log(info.FileName + " " + info.Arguments);
+
+			Process pro = Process.Start(info);
+			pro.WaitForExit();
+		}
+		AssetDatabase.Refresh();
+	}
+
 	/// <summary>
 	/// 数据目录
 	/// </summary>

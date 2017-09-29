@@ -60,10 +60,7 @@
      <Compile Include="Assets\Plugins\FairyUI\Editor\UIPanelEditor.cs" />
      <None Include="Assets\GameLua\Engine\目录说明.txt" />
      <None Include="Assets\link.xml" />
-     <None Include="Assets\StreamingAssets\files.txt" />
      <None Include="Assets\GameLua\GamesLogic\目录说明.txt" />
-     <None Include="Assets\StreamingAssets\lua\Egine\目录说明.txt" />
-     <None Include="Assets\StreamingAssets\lua\GamesLogic\目录说明.txt" />
      <None Include="Assets\LuaFramework\ToLua\readme.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
